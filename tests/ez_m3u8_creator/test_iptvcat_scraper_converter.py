@@ -5,9 +5,9 @@ import pytest
 from ez_m3u8_creator import iptvcat_scraper_converter
 
 
-TEST_FILE_INTEGRATION_PATH = R'tests\ez_m3u8_creator\TestFiles\test_file_integration.json'
-TEST_FILE_INTEGRATION_CONVERTED_PATH = R'tests\ez_m3u8_creator\TestFiles\test_file_integration_converted.m3u8'
-TEST_PATH_DIR = R'tests\ez_m3u8_creator\TestFiles\TestFolder'
+TEST_FILE_INTEGRATION_PATH = R'tests/ez_m3u8_creator/TestFiles/test_file_integration.json'
+TEST_FILE_INTEGRATION_CONVERTED_PATH = R'tests/ez_m3u8_creator/TestFiles/test_file_integration_converted.m3u8'
+TEST_PATH_DIR = R'tests/ez_m3u8_creator/TestFiles/TestFolder'
 
 def test_parse_json_file():
     file_path = TEST_FILE_INTEGRATION_PATH
