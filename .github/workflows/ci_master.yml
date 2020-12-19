@@ -17,9 +17,6 @@ jobs:
         os: ["ubuntu-latest"]
         python-version: [3.9]
         include:
-            - os: windows-latest
-              script_name: .\dev/run_tests.bat
-              env_print_script_name: set
             - os: ubuntu-latest
               script_name: ./dev/run_tests.sh
               env_print_script_name: printenv
@@ -63,8 +60,6 @@ jobs:
       matrix:
         os: ["ubuntu-latest"]
         include:
-            - os: windows-latest
-              script_name: .\dev/run_linters.bat
             - os: ubuntu-latest
               script_name: ./dev/run_linters.sh
     name: Latest Dev Linting
@@ -94,10 +89,8 @@ jobs:
   package_safety_checks:
     strategy:
       matrix:
-        os: ["ubuntu-latest", "windows-latest"]
+        os: ["ubuntu-latest"]
         include:
-            - os: windows-latest
-              script_name: .\dev/check_package_safety.bat
             - os: ubuntu-latest
               script_name: ./dev/check_package_safety.sh
     name: Pkg Safety (Failure Allowed)
