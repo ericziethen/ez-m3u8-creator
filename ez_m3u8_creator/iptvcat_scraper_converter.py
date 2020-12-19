@@ -2,6 +2,8 @@
 
 import json
 
+from ez_m3u8_creator import m3u8
+
 
 class IptvCatFile():
     """A single IptvCat scraper file."""
@@ -27,7 +29,13 @@ class IptvCatFile():
 
         self.data = new_data
 
-    #def write_playlist(self, *, out_path)
+    def write_playlist(self, *, out_path):
+        m3u8_file = m3u8.M3U8File()
+
+        for channel in self:
+            m3u8_file.add_channel(name=channel['channel'], url=channel['link'])
+
+        m3u8_file.write_file(out_path)
 
     def _parse_file(self):
         """Parse the file."""

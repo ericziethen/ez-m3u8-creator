@@ -2,7 +2,7 @@
     {
         "id": "1",
         "channel": "Channel 1",
-        "link": "Link 1",
+        "link": "Link.1",
         "country": "germany",
         "liveliness": "80",
         "status": "online",
@@ -19,7 +19,7 @@
     {
         "id": "2",
         "channel": "Channel 2",
-        "link": "Link 2",
+        "link": "Link.2",
         "country": "germany",
         "liveliness": "100",
         "status": "online",
@@ -36,7 +36,7 @@
     {
         "id": "3",
         "channel": "Channel 3",
-        "link": "Link 3",
+        "link": "Link.3",
         "country": "germany",
         "liveliness": "99",
         "status": "online",
@@ -53,7 +53,7 @@
     {
         "id": "4",
         "channel": "Channel 4",
-        "link": "Link 4",
+        "link": "Link.4",
         "country": "germany",
         "liveliness": "99",
         "status": "offline",
@@ -70,7 +70,7 @@
     {
         "id": "5",
         "channel": "Channel 5",
-        "link": "Link 5",
+        "link": "Link.5",
         "country": "germany",
         "liveliness": "100",
         "status": "online",
