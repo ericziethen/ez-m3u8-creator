@@ -27,6 +27,8 @@ class IptvCatFile():
 
         self.data = new_data
 
+    #def write_playlist(self, *, out_path)
+
     def _parse_file(self):
         """Parse the file."""
         with open(self.path, 'r', encoding='utf-8') as file_ptr:

@@ -4,8 +4,11 @@ import pytest
 from ez_m3u8_creator import iptvcat_scraper_converter
 
 
+TEST_FILE_INTEGRATION_PATH = R"tests\ez_m3u8_creator\TestFiles\test_file_integration.json"
+
+
 def test_parse_json_file():
-    file_path = R"tests\ez_m3u8_creator\TestFiles\test_file_integration.json"
+    file_path = TEST_FILE_INTEGRATION_PATH
     iptvcat_file = iptvcat_scraper_converter.IptvCatFile(file_path)
 
     assert iptvcat_file.path == file_path
@@ -17,30 +20,36 @@ def test_parse_json_file():
     assert sorted(imported_ids) == sorted(expected_ids)
 
 FILTER_IDS = [
-    (['INVALID_STATUS'], 0, []),
-    (['INVALID_STATUS'], 100, []),
-    (['online'], 100, ['2', '5']),
-    (['online'], 99, ['2', '3', '5']),
-    (['online'], 0, ['1', '2', '3', '5']),
-    (['offline'], 0, ['4']),
+    (TEST_FILE_INTEGRATION_PATH, ['INVALID_STATUS'], 0, []),
+    (TEST_FILE_INTEGRATION_PATH, ['INVALID_STATUS'], 100, []),
+    (TEST_FILE_INTEGRATION_PATH, ['online'], 100, ['2', '5']),
+    (TEST_FILE_INTEGRATION_PATH, ['online'], 99, ['2', '3', '5']),
+    (TEST_FILE_INTEGRATION_PATH, ['online'], 0, ['1', '2', '3', '5']),
+    (TEST_FILE_INTEGRATION_PATH, ['offline'], 0, ['4']),
 ]
-@pytest.mark.parametrize('status_list, liveliness, expected_ids', FILTER_IDS)
-def test_filter_channel_list(status_list, liveliness, expected_ids):
-    # Test with online, 100
-    file_path = R"tests\ez_m3u8_creator\TestFiles\test_file_integration.json"
+@pytest.mark.parametrize('file_path, status_list, liveliness, expected_ids', FILTER_IDS)
+def test_filter_channel_list(file_path, status_list, liveliness, expected_ids):
     iptvcat_file = iptvcat_scraper_converter.IptvCatFile(file_path)
 
     iptvcat_file.filter_channels(status_list=status_list, liveliness_min=liveliness)
     ids = [d['id'] for d in iptvcat_file]
     assert sorted(ids) == sorted(expected_ids)
 
+
+def test_convert_json_to_m3u8(tmpdir):
+    out_file = tmpdir.join('output.m3u8')
+
+    file_path = TEST_FILE_INTEGRATION_PATH
+    iptvcat_file = iptvcat_scraper_converter.IptvCatFile(file_path)
+    iptvcat_file.filter_channels(status_list=['online'], liveliness_min=100)
+
+    iptvcat_file.write_playlist(out_path=out_file)
+
+    with open(file_path, 'r', encoding='utf-8') as file_ptr:
+        assert file_ptr == out_file.read_text()
+
+
 '''
-def test_sort_filter_list():
-    assert False
-
-def test_convert_json_to_m3u8():
-    assert False
-
 def test_convert_dir_to_m3u8():
     assert False
 '''
