@@ -3,6 +3,7 @@
 M3U8_OPENING_TAG = '#EXTM3U'
 M3U8_CHANNEL_INFO_PREFIX = '#EXTINF:0'
 
+
 class M3U8File():
     """An m3u8 file representation."""
 

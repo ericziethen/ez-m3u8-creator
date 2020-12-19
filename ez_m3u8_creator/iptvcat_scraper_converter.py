@@ -9,10 +9,12 @@ from ez_m3u8_creator import m3u8
 INCLUDE_STATUS_LIST = ['online']
 LIVELINESS_MIN = 100
 
+
 class IptvCatFile():
     """A single IptvCat scraper file."""
 
     def __init__(self, file_path):
+        """Create a iptv cat file object."""
         self.path = file_path
         self.data = []
 
@@ -20,7 +22,6 @@ class IptvCatFile():
 
     def filter_channels(self, *, status_list, liveliness_min):
         """Filter the channels by the given attributes."""
-
         new_data = []
         for entry in self.data:
             if entry['status'] not in status_list:
@@ -34,6 +35,7 @@ class IptvCatFile():
         self.data = new_data
 
     def write_playlist(self, *, out_path):
+        """Write the playlist to the given file."""
         m3u8_file = m3u8.M3U8File()
 
         for channel in self:
@@ -54,7 +56,7 @@ class IptvCatFile():
 
 
 def convert_json_dir_to_m3u8(*, in_dir, out_dir):
-
+    """Convert the json files to the m3u8 files."""
     for root, _, files in os.walk(in_dir):
         for filename in files:
             if not filename.lower().endswith('.json'):
