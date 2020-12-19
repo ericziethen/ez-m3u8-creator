@@ -1,9 +1,13 @@
 """Handle data import and convertion for the iptvcat_scraper files."""
 
 import json
+import os
 
 from ez_m3u8_creator import m3u8
 
+
+INCLUDE_STATUS_LIST = ['online']
+LIVELINESS_MIN = 100
 
 class IptvCatFile():
     """A single IptvCat scraper file."""
@@ -47,3 +51,19 @@ class IptvCatFile():
 
     def __iter__(self):
         return iter(self.data)
+
+
+def convert_json_dir_to_m3u8(*, in_dir, out_dir):
+
+    for root, _, files in os.walk(in_dir):
+        for filename in files:
+            if not filename.lower().endswith('.json'):
+                continue
+
+            base_name = os.path.splitext(filename)[0]
+            from_file_path = os.path.join(root, filename)
+            out_file_path = os.path.join(out_dir, base_name + '.m3u8')
+
+            iptvcat_file = IptvCatFile(from_file_path)
+            iptvcat_file.filter_channels(status_list=INCLUDE_STATUS_LIST, liveliness_min=LIVELINESS_MIN)
+            iptvcat_file.write_playlist(out_path=out_file_path)

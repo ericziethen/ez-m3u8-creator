@@ -1,4 +1,5 @@
 
+import os
 import pytest
 
 from ez_m3u8_creator import iptvcat_scraper_converter
@@ -6,7 +7,7 @@ from ez_m3u8_creator import iptvcat_scraper_converter
 
 TEST_FILE_INTEGRATION_PATH = R'tests\ez_m3u8_creator\TestFiles\test_file_integration.json'
 TEST_FILE_INTEGRATION_CONVERTED_PATH = R'tests\ez_m3u8_creator\TestFiles\test_file_integration_converted.m3u8'
-
+TEST_PATH_DIR = R'tests\ez_m3u8_creator\TestFiles\TestFolder'
 
 def test_parse_json_file():
     file_path = TEST_FILE_INTEGRATION_PATH
@@ -54,9 +55,35 @@ def test_convert_json_to_m3u8(tmpdir):
         assert len(in_file_line_list) == 5
 
         # Rough test that all the lines are matching
-        for idx, line1 in enumerate(in_file_line_list):
-            assert line1.rstrip() == out_file_line_list[idx]
+        for idx, line in enumerate(in_file_line_list):
+            assert line.rstrip() == out_file_line_list[idx]
 
 
-def test_convert_dir_to_m3u8():
-    assert False
+def test_convert_dir_to_m3u8(tmpdir):
+    convert_dir = TEST_PATH_DIR
+
+    iptvcat_scraper_converter.convert_json_dir_to_m3u8(in_dir=convert_dir, out_dir=tmpdir)
+
+    for root, _, files in os.walk(convert_dir):
+        for filename in files:
+            if not filename.lower().endswith('.json'):
+                continue
+
+            converted_file_name = os.path.splitext(filename)[0] + '.m3u8'
+            converted_file_path = os.path.join(tmpdir, converted_file_name)
+            test_file_path = os.path.join(convert_dir, converted_file_name)
+
+            print(test_file_path)
+
+            assert os.path.exists(test_file_path)
+            assert os.path.exists(converted_file_path)
+
+            with open(converted_file_path, 'r', encoding='utf-8') as convert_file_ptr:
+                with open(test_file_path, 'r', encoding='utf-8') as test_file_ptr:
+                    convert_file_list = list(convert_file_ptr)
+                    test_file_list = list(test_file_ptr)
+
+                    assert len(convert_file_list) == len(test_file_list)
+
+                for idx, line in enumerate(convert_file_list):
+                    assert line == test_file_list[idx]
