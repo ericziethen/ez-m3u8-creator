@@ -12,6 +12,21 @@ class IptvCatFile():
 
         self._parse_file()
 
+    def filter_channels(self, *, status_list, liveliness_min):
+        """Filter the channels by the given attributes."""
+
+        new_data = []
+        for entry in self.data:
+            if entry['status'] not in status_list:
+                continue
+
+            if int(entry['liveliness']) < liveliness_min:
+                continue
+
+            new_data.append(entry)
+
+        self.data = new_data
+
     def _parse_file(self):
         """Parse the file."""
         with open(self.path, 'r', encoding='utf-8') as file_ptr:
