@@ -40,7 +40,7 @@ jobs:
       - name: Get IPTVCat Release
         run: |
           echo "Command: 'scripts/iptvcat/get_iptvcat_scraper_release.sh "${IPTVCAT_DATE}" "${IPTVCAT_DOWNLOAD_DIR}"'"
-          scripts/iptvcat/get_iptvcat_scraper_release.sh "${IPTVCAT_DATE}" "${IPTVCAT_DOWNLOAD_DIR}"
+          ./scripts/iptvcat/get_iptvcat_scraper_release.sh "${IPTVCAT_DATE}" "${IPTVCAT_DOWNLOAD_DIR}"
 
       # - name: Convert IPTVCat (JSON to m3u8)
 
