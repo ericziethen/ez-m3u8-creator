@@ -53,9 +53,6 @@ ls -altr ${dest_dir}
 
 ### Extract the Release
 
-# echo "Command: 'tar -xvf ${dest_file_path} -C ${dest_dir}'"
-# tar -xvf ${dest_file_path} -C ${dest_dir}
-
 ignore_files=-x all-*
 
 echo "Command: 'unzip ${dest_file_path} -d ${dest_dir}' ${ignore_files}"
