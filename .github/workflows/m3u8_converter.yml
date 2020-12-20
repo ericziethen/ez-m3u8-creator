@@ -20,19 +20,21 @@ jobs:
           echo "IPTVCAT_DOWNLOAD_DIR=temp/iptvcat" >> $GITHUB_ENV
           echo "M3U8_DIR=temp/m3u8" >> $GITHUB_ENV
 
-          echo "IPTVCAT_DATE: '${IPTVCAT_DATE}'
-          echo "IPTVCAT_DOWNLOAD_DIR: '${IPTVCAT_DOWNLOAD_DIR}'
-          echo "M3U8_DIR: '${M3U8_DIR}'
+          echo "IPTVCAT_DATE: '${IPTVCAT_DATE}'"
+          echo "IPTVCAT_DOWNLOAD_DIR: '${IPTVCAT_DOWNLOAD_DIR}'"
+          echo "M3U8_DIR: '${M3U8_DIR}'"
 
       - name: Setup Dirs
         run: |
-          echo "IPTVCAT_DATE: '${IPTVCAT_DATE}'
-          echo "IPTVCAT_DOWNLOAD_DIR: '${IPTVCAT_DOWNLOAD_DIR}'
-          echo "M3U8_DIR: '${M3U8_DIR}'
+          echo "IPTVCAT_DATE: '${IPTVCAT_DATE}'"
+          echo "IPTVCAT_DOWNLOAD_DIR: '${IPTVCAT_DOWNLOAD_DIR}'"
+          echo "M3U8_DIR: '${M3U8_DIR}'"
+
           echo "Command: 'mkdir ${IPTVCAT_DOWNLOAD_DIR}'"
           mkdir ${IPTVCAT_DOWNLOAD_DIR}
           echo "Command: 'mkdir ${M3U8_DIR}'"
           mkdir ${M3U8_DIR}
+
           echo "Command: 'ls ${IPTVCAT_DOWNLOAD_DIR}'"
           ls ${IPTVCAT_DOWNLOAD_DIR}
           echo "Command: 'ls ${M3U8_DIR}'"
