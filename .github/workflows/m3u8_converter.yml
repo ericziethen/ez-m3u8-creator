@@ -42,7 +42,16 @@ jobs:
           echo "Command: './scripts/iptvcat/get_iptvcat_scraper_release.sh "${IPTVCAT_DATE}" "${IPTVCAT_DOWNLOAD_DIR}"'"
           ./scripts/iptvcat/get_iptvcat_scraper_release.sh "${IPTVCAT_DATE}" "${IPTVCAT_DOWNLOAD_DIR}"
 
-      # - name: Convert IPTVCat (JSON to m3u8)
+      - name: Convert IPTVCat (JSON to m3u8)
+        run: |
+          echo "Command: 'ls -alt ${M3U8_DIR}'"
+          ls -alt ${M3U8_DIR}
 
-      # - name: Upload m3u8 files
+          python ./scripts/iptvcat/convert_iptvcat_scraper_files.py "${IPTVCAT_DOWNLOAD_DIR}" "${M3U8_DIR}"
 
+          echo "Command: 'ls -alt ${M3U8_DIR}'"
+          ls -alt ${M3U8_DIR}
+
+      - name: Upload m3u8 files
+        run: |
+          python ./scripts/ftp_upload.py --ftp_server "${{ secrets.FTP_UPLOAD_ADDRESS }}" --ftp_user "${{ secrets.FTP_UPLOAD_USERNAME }}" --ftp_pass "${{ secrets.FTP_UPLOAD_PASSWORD }}" --ftp_dir "${{ secrets.FTP_UPLOAD_REMOTE_DIR }}" --upload_dir "${M3U8_DIR}"

@@ -9,6 +9,7 @@ sys.path.append(R'D:\# Eric Projects\ez-m3u8-creator')
 from ez_m3u8_creator.iptvcat import iptvcat_scraper_converter
 from ez_m3u8_creator import project_logger
 
+
 def main():
     """Run the main function."""
     parser = argparse.ArgumentParser()
