@@ -15,6 +15,9 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Setup Environment
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
         # e.g. create work dirst, store in env variables ... https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-commands-for-github-actions
         run: |
           echo "IPTVCAT_DATE=$(date -d "yesterday 13:00" '+%Y-%m-%d')" >> $GITHUB_ENV
@@ -44,12 +47,16 @@ jobs:
 
       - name: Convert IPTVCat (JSON to m3u8)
         run: |
+          echo "Command: 'ls -alt ${IPTVCAT_DOWNLOAD_DIR}'"
+          ls -alt ${IPTVCAT_DOWNLOAD_DIR}
           echo "Command: 'ls -alt ${M3U8_DIR}'"
           ls -alt ${M3U8_DIR}
 
           echo "Command: 'python ./scripts/iptvcat/convert_iptvcat_scraper_files.py "${IPTVCAT_DOWNLOAD_DIR}" "${M3U8_DIR}"'"
           python ./scripts/iptvcat/convert_iptvcat_scraper_files.py "${IPTVCAT_DOWNLOAD_DIR}" "${M3U8_DIR}"
 
+          echo "Command: 'ls -alt ${IPTVCAT_DOWNLOAD_DIR}'"
+          ls -alt ${IPTVCAT_DOWNLOAD_DIR}
           echo "Command: 'ls -alt ${M3U8_DIR}'"
           ls -alt ${M3U8_DIR}
 
