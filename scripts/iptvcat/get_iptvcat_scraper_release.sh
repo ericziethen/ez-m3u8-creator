@@ -31,8 +31,8 @@ echo "Target Dir '${dest_dir}'"
 
 ### Download the Release
 
-echo "Command: 'ls -altr ${dest_dir}'"
-ls -altr ${dest_dir}
+echo "Command: 'ls -alt ${dest_dir}'"
+ls -alt ${dest_dir}
 
 dest_file_path=${dest_dir}/streams.zip
 
@@ -48,8 +48,8 @@ then
     exit 1
 fi
 
-echo "Command: 'ls -altr ${dest_dir}'"
-ls -altr ${dest_dir}
+echo "Command: 'ls -alt ${dest_dir}'"
+ls -alt ${dest_dir}
 
 ### Extract the Release
 
@@ -58,5 +58,5 @@ ignore_files="-x all-*"
 echo "Command: 'unzip ${dest_file_path} -d ${dest_dir}' ${ignore_files}"
 unzip ${dest_file_path} -d ${dest_dir} ${ignore_files}
 
-echo "Command: 'ls -altr ${dest_dir}'"
-ls -altr ${dest_dir}
+echo "Command: 'ls -alt ${dest_dir}'"
+ls -alt ${dest_dir}

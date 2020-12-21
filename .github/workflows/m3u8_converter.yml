@@ -32,10 +32,10 @@ jobs:
           echo "Command: 'mkdir -p ${M3U8_DIR}'"
           mkdir -p ${M3U8_DIR}
 
-          echo "Command: 'ls -altr ${IPTVCAT_DOWNLOAD_DIR}'"
-          ls -altr ${IPTVCAT_DOWNLOAD_DIR}
-          echo "Command: 'ls -altr ${M3U8_DIR}'"
-          ls -altr ${M3U8_DIR}
+          echo "Command: 'ls -alt ${IPTVCAT_DOWNLOAD_DIR}'"
+          ls -alt ${IPTVCAT_DOWNLOAD_DIR}
+          echo "Command: 'ls -alt ${M3U8_DIR}'"
+          ls -alt ${M3U8_DIR}
 
       - name: Get IPTVCat Release
         run: |
