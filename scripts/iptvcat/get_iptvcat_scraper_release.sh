@@ -53,7 +53,7 @@ ls -altr ${dest_dir}
 
 ### Extract the Release
 
-ignore_files=-x all-*
+ignore_files="-x all-*"
 
 echo "Command: 'unzip ${dest_file_path} -d ${dest_dir}' ${ignore_files}"
 unzip ${dest_file_path} -d ${dest_dir} ${ignore_files}
