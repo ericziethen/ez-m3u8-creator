@@ -19,7 +19,7 @@ jobs:
         run: |
           echo "IPTVCAT_DATE=$(date -d "yesterday 13:00" '+%Y-%m-%d')" >> $GITHUB_ENV
           echo "IPTVCAT_DOWNLOAD_DIR=${{ github.workspace }}/temp/iptvcat" >> $GITHUB_ENV
-          echo "M3U8_DIR=${{ github.workspace }}temp/m3u8" >> $GITHUB_ENV
+          echo "M3U8_DIR=${{ github.workspace }}/temp/m3u8" >> $GITHUB_ENV
 
       - name: Setup Dirs
         run: |
