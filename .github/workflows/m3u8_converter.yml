@@ -47,6 +47,7 @@ jobs:
           echo "Command: 'ls -alt ${M3U8_DIR}'"
           ls -alt ${M3U8_DIR}
 
+          echo "Command: 'python ./scripts/iptvcat/convert_iptvcat_scraper_files.py "${IPTVCAT_DOWNLOAD_DIR}" "${M3U8_DIR}"'"
           python ./scripts/iptvcat/convert_iptvcat_scraper_files.py "${IPTVCAT_DOWNLOAD_DIR}" "${M3U8_DIR}"
 
           echo "Command: 'ls -alt ${M3U8_DIR}'"
@@ -54,4 +55,5 @@ jobs:
 
       - name: Upload m3u8 files
         run: |
+          echo "Command: 'python ./scripts/ftp_upload.py --ftp_server "${{ secrets.FTP_UPLOAD_ADDRESS }}" --ftp_user "${{ secrets.FTP_UPLOAD_USERNAME }}" --ftp_pass "********" --ftp_dir "${{ secrets.FTP_UPLOAD_REMOTE_DIR }}" --upload_dir "${M3U8_DIR}"'"
           python ./scripts/ftp_upload.py --ftp_server "${{ secrets.FTP_UPLOAD_ADDRESS }}" --ftp_user "${{ secrets.FTP_UPLOAD_USERNAME }}" --ftp_pass "${{ secrets.FTP_UPLOAD_PASSWORD }}" --ftp_dir "${{ secrets.FTP_UPLOAD_REMOTE_DIR }}" --upload_dir "${M3U8_DIR}"

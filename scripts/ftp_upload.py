@@ -25,6 +25,11 @@ def main():
     parser.add_argument('-ud', '--upload_dir', help='The upload directory')
     args = parser.parse_args()
 
+    print('FTP SERVER', args.ftp_server)
+    print('FTP USERNAME', args.ftp_user)
+    print('FTP DIR', args.ftp_dir)
+    print('UPLOAD DIR', args.upload_dir)
+
     # Get base files
     file_list = get_upload_list(args.upload_dir)
 
