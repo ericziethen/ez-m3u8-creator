@@ -1,9 +1,10 @@
 name: M3U8_ACTION
 
 on:
-  push:
-    branches:
-    - feature/main-workflow
+  # Run 2 Hours after https://github.com/eliashussary/iptvcat-scraper
+  # This should be just after midnight in Australia
+  schedule:
+    - cron: "0 14 * * *"
 
 jobs:
 
@@ -25,6 +26,8 @@ jobs:
           echo "IPTVCAT_DATE=$(date -d "yesterday 13:00" '+%Y-%m-%d')" >> $GITHUB_ENV
           echo "IPTVCAT_DOWNLOAD_DIR=${{ github.workspace }}/temp/iptvcat" >> $GITHUB_ENV
           echo "M3U8_DIR=${{ github.workspace }}/temp/m3u8" >> $GITHUB_ENV
+
+          # Update pythonpath used for our scripts
           echo "PYTHONPATH=$PYTHONPATH:${{ github.workspace }}" >> $GITHUB_ENV
 
       - name: Setup Dirs
