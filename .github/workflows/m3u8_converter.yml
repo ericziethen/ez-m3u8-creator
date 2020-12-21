@@ -26,6 +26,19 @@ jobs:
           echo "IPTVCAT_DOWNLOAD_DIR=${{ github.workspace }}/temp/iptvcat" >> $GITHUB_ENV
           echo "M3U8_DIR=${{ github.workspace }}/temp/m3u8" >> $GITHUB_ENV
 
+          echo "Show Workspace"
+          ls -alt ${{ github.workspace }}
+
+          echo "Show PYTHONPATH"
+          echo $PYTHONPATH
+
+          echo "::set-env name=PYTHONPATH::ericTEST"
+          #echo "/path/to/dir" >> $GITHUB_PATH
+
+          echo "Show NEW PYTHONPATH"
+          echo $PYTHONPATH
+
+
       - name: Setup Dirs
         run: |
           echo "IPTVCAT_DATE: '${IPTVCAT_DATE}'"
