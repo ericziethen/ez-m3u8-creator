@@ -76,4 +76,5 @@ jobs:
 
       - name: Upload m3u8 files to Dropbox
         run: |
-          ./scripts.upload_to_dropbox.sh "${M3U8_DIR}" "${{ secrets.DROPBOX_UPLOAD_DIR }}" "${{ secrets.DROPBOX_UPLOAD_TOKEN }}"
+          echo "Command: './scripts/upload_to_dropbox.sh "${M3U8_DIR}" "IPTV" "${{ secrets."********" }}"'"
+          ./scripts/upload_to_dropbox.sh "${M3U8_DIR}" "IPTV" "${{ secrets.DROPBOX_UPLOAD_TOKEN }}"
