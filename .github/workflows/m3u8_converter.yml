@@ -5,6 +5,9 @@ on:
   # This should be just after midnight in Australia
   schedule:
     - cron: "0 14 * * *"
+  push:
+    branches:
+    - feature/upload-to-dropbox
 
 jobs:
 
@@ -66,7 +69,11 @@ jobs:
           echo "Command: 'ls -alt ${M3U8_DIR}'"
           ls -alt ${M3U8_DIR}
 
-      - name: Upload m3u8 files
+      - name: Upload m3u8 files to FTP
         run: |
           echo "Command: 'python ./scripts/ftp_upload.py --ftp_server "${{ secrets.FTP_UPLOAD_ADDRESS }}" --ftp_user "${{ secrets.FTP_UPLOAD_USERNAME }}" --ftp_pass "********" --ftp_dir "${{ secrets.FTP_UPLOAD_REMOTE_DIR }}" --upload_dir "${M3U8_DIR}"'"
           python ./scripts/ftp_upload.py --ftp_server "${{ secrets.FTP_UPLOAD_ADDRESS }}" --ftp_user "${{ secrets.FTP_UPLOAD_USERNAME }}" --ftp_pass "${{ secrets.FTP_UPLOAD_PASSWORD }}" --ftp_dir "${{ secrets.FTP_UPLOAD_REMOTE_DIR }}" --upload_dir "${M3U8_DIR}"
+
+      - name: Upload m3u8 files to Dropbox
+        run: |
+          ./scripts.upload_to_dropbox.sh "${M3U8_DIR}" "${{ secrets.DROPBOX_UPLOAD_DIR }}" "${{ secrets.DROPBOX_UPLOAD_TOKEN }}"
