@@ -43,15 +43,15 @@ for filename in *; do
   if [ -f "${filename}" ]; then  # Only Files
     echo "COMMAND curl --fail -X POST https://content.dropboxapi.com/2/files/upload \
         --header "Authorization: Bearer **********" \
-        --header "Dropbox-API-Arg: {\"path\": \"/${dropbox_dir}\"}" \
+        --header "Dropbox-API-Arg: {\"path\": \"/${dropbox_dir}/${filename}\", \"mode\": \"overwrite\"}" \
         --header "Content-Type: application/octet-stream" \
-        --data-binary @${dropbox_dir}/${filename}"
+        --data-binary @"${filename}""
 
     curl --fail -X POST https://content.dropboxapi.com/2/files/upload \
-            --header "Authorization: Bearer ${dropbox_token}" \
-            --header "Dropbox-API-Arg: {\"path\": \"/${dropbox_dir}/${filename}\", \"mode\": \"overwrite\"}" \
-            --header "Content-Type: application/octet-stream" \
-            --data-binary @${filename}
+        --header "Authorization: Bearer ${dropbox_token}" \
+        --header "Dropbox-API-Arg: {\"path\": \"/${dropbox_dir}/${filename}\", \"mode\": \"overwrite\"}" \
+        --header "Content-Type: application/octet-stream" \
+        --data-binary @"${filename}"
     return_code=$?
     echo "*** Return Code: ${return_code}"
     if [[ ${return_code} -ne  0 ]];
