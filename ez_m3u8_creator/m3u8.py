@@ -24,6 +24,13 @@ class M3U8File():
             'group': group,
         })
 
+    def add_groups_from_category_dic(self, category_dic, *, overwrite=True):
+        """Calculate the groups based on the given json file."""
+        for channel in self.channel_list:
+            categories = get_categories_from_json(channel_name=channel['name'], json_data=category_dic)
+            if categories and overwrite:
+                channel['group'] = ';'.join(categories)
+
     def _load_file(self, file_path):
         with open(file_path, 'r', encoding='utf-8') as file_ptr:
             details = {}
