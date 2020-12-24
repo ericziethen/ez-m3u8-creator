@@ -1,0 +1,24 @@
+[
+    {
+        "Kids": {
+            "contains": [
+                "test"
+            ]
+        },
+    },
+    {
+        "News": {
+            "contains": [
+                "test"
+            ]
+        },
+    },
+    {
+        "Sport": {
+            "contains": [
+                "sport",
+                "bundesliga"
+            ]
+        }
+    }
+]

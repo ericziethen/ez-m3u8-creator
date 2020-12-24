@@ -43,14 +43,17 @@ def test_load_m3u8_file(tmpdir):
             assert line.rstrip() == out_file_line_list[idx]
 
 
-TEST_JSON_CATEGORIES = {
-    'News': {
-        'contains': ['cnn', 'cnbc', 'bbc']
+TEST_JSON_CATEGORIES = [
+    {
+        'News': {
+            'contains': ['cnn', 'cnbc', 'bbc']
+        },
     },
-    'Sport': {
-        'contains': ['sport']
-    }
-}
+    {
+        'Sport': {
+            'contains': ['sport']
+        }
+}]
 CHANNEL_CATEGORIES = [
     ('CNBC', ['News']),
     ('sPort', ['Sport']),
@@ -64,14 +67,18 @@ def test_get_categories_from_json(channel_name, category_list):
 
 
 def test_add_categories_from_json_to_m3u():
-    category_dic = {
+    category_dic = [
+    {
         'News': {
             'contains': ['cnn', 'cnbc', 'bbc']
         },
+    },
+    {
         'Sport': {
             'contains': ['sport']
         },
-    }
+    },
+    ]
 
     m3u8_file = m3u8.M3U8File()
 

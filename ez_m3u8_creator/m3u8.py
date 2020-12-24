@@ -65,13 +65,13 @@ def get_categories_from_json(*, channel_name, json_data):
     """Get the categories for a channel name."""
 
     categories = []
-
-    for category, criterias in json_data.items():
-        for criteria in criterias:
-            if criteria == 'contains':
-                for keyword in criterias[criteria]:
-                    if keyword.lower() in channel_name.lower():
-                        categories.append(category)
-                        break
+    for category in json_data:
+        for name, criterias in category.items():
+            for criteria in criterias:
+                if criteria == 'contains':
+                    for keyword in criterias[criteria]:
+                        if keyword.lower() in channel_name.lower():
+                            categories.append(name)
+                            break
 
     return categories
