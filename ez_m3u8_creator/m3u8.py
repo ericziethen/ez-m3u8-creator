@@ -41,7 +41,7 @@ class M3U8File():
                 elif line.startswith(M3U8_CHANNEL_INFO_PREFIX):
                     # Get the Channel Name
                     # Assume for now we MUST always have a ',' so not adding any checking for now
-                    details['name'] = line[line.rfind(',') + 1:]  # New str from after the last comma
+                    details['name'] = line[line.find(',') + 1:]
 
                     # Get the channel Group
                     details['group'] = ''
