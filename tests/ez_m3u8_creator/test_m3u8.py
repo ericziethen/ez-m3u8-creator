@@ -1,4 +1,6 @@
 
+import pytest
+
 from ez_m3u8_creator import m3u8
 
 TEST_FILE_INTEGRATION_CONVERTED_PATH = R'tests/ez_m3u8_creator/TestFiles/test_file_integration_converted.m3u8'
@@ -40,8 +42,25 @@ def test_load_m3u8_file(tmpdir):
             assert line.rstrip() == out_file_line_list[idx]
 
 
-def test_get_categories_from_json():
-    assert False
+TEST_JSON_CATEGORIES = {
+    'News': {
+        'contains': ['cnn', 'cnbc', 'bbc']
+    },
+    'Sport': {
+        'contains': ['sport']
+    }
+}
+CHANNEL_CATEGORIES = [
+    ('CNBC', ['News']),
+    ('sPort', ['Sport']),
+    ('CNN SPORT', ['News', 'Sport']),
+    ('Sport 1', ['Sport']),
+    ('RTL II', []),
+]
+@pytest.mark.parametrize('channel_name, category_list', CHANNEL_CATEGORIES)
+def test_get_categories_from_json(channel_name, category_list):
+    assert category_list == m3u8.get_categories_from_json(channel_name=channel_name, json_data=TEST_JSON_CATEGORIES)
+
 
 
 def test_add_categories_from_json_to_m3u():
