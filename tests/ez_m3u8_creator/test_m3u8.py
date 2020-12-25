@@ -46,12 +46,13 @@ def test_load_m3u8_file(tmpdir):
 TEST_JSON_CATEGORIES = [
     {
         'News': {
-            'contains': ['cnn', 'cnbc', 'bbc']
+            'icontains': ['cnn', 'cnbc', 'bbc']
         },
     },
     {
         'Sport': {
-            'contains': ['sport']
+            'icontains': ['sport'],
+            'iexact': ['TestMe'],
         }
 }]
 CHANNEL_CATEGORIES = [
@@ -60,6 +61,8 @@ CHANNEL_CATEGORIES = [
     ('CNN SPORT', ['News', 'Sport']),
     ('Sport 1', ['Sport']),
     ('RTL II', []),
+    ('TestMe Not', []),
+    ('TestMe', ['Sport']),
 ]
 @pytest.mark.parametrize('channel_name, category_list', CHANNEL_CATEGORIES)
 def test_get_categories_from_json(channel_name, category_list):
@@ -70,12 +73,12 @@ def test_add_categories_from_json_to_m3u():
     category_dic = [
     {
         'News': {
-            'contains': ['cnn', 'cnbc', 'bbc']
+            'icontains': ['cnn', 'cnbc', 'bbc']
         },
     },
     {
         'Sport': {
-            'contains': ['sport']
+            'icontains': ['sport']
         },
     },
     ]

@@ -62,34 +62,33 @@ class M3U8File():
 
 def get_categories_from_json(*, channel_name, json_data):
     """Get the categories for a channel name."""
-
     # if "hr" not in channel_name.lower():
     #     return []
 
-    #print(F'\n\n##### {channel_name} #####')
+    # print(F'\n\n##### {channel_name} #####')
 
     categories = []
-    for category in json_data:
-        #print('category', category)
+    for category in json_data:  # pylint: disable=too-many-nested-blocks
+        # print('category', category)
         for name, criterias in category.items():
-            #print('  name', name)
+            # print('  name', name)
 
             for criteria in criterias:
-                #print('     criteria', criteria)
+                # print('     criteria', criteria)
                 if criteria == 'icontains':
                     for keyword in criterias[criteria]:
                         if keyword.lower() in channel_name.lower():
                             categories.append(name)
-                            #print('             => FOUND')
+                            # print('             => FOUND')
                             break
                 elif criteria == 'iexact':
-                    #print('CRITERIA', criteria)
+                    # print('CRITERIA', criteria)
                     for keyword in criterias[criteria]:
                         if keyword.lower() == channel_name.lower():
                             categories.append(name)
-                            #print('             => FOUND')
+                            # print('             => FOUND')
                             break
 
-    #print("categories", categories)
+    # print("categories", categories)
 
     return categories
