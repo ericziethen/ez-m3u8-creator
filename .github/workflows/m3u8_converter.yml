@@ -5,9 +5,9 @@ on:
   # This should be just after midnight in Australia
   schedule:
     - cron: "0 14 * * *"
-  push:
-    branches:
-    - feature/add-category-to-channels
+  # push:
+  #   branches:
+  #   - feature/
 
 jobs:
 
