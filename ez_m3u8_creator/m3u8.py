@@ -16,12 +16,13 @@ class M3U8File():
         if file_path is not None:
             self._load_file(file_path)
 
-    def add_channel(self, *, name, url, group=''):
+    def add_channel(self, *, name, url, group='', channel_id=''):
         """Add a channel to the file."""
         self.channel_list.append({
             'name': name,
             'url': url,
             'group': group,
+            'id': channel_id,
         })
 
     def add_groups_from_category_dic(self, category_dic, *, overwrite=True):
@@ -43,12 +44,17 @@ class M3U8File():
                     # Assume for now we MUST always have a ',' so not adding any checking for now
                     details['name'] = line[line.find(',') + 1:]
 
+                    # Get the channel id
+                    id_pattern = 'tvg-id="(?P<id>.*?)"'
+                    result = re.search(id_pattern, line)
+                    details['id'] = result.group('id') if bool(result) else ''
+
                     # Get the channel Group
                     group_pattern = 'group-title="(?P<group>.*?)"'
                     result = re.search(group_pattern, line)
                     details['group'] = result.group('group') if bool(result) else 'No Group'
                 else:  # Assume it's the url
-                    self.add_channel(name=details['name'], url=line, group=details['group'])
+                    self.add_channel(name=details['name'], url=line, group=details['group'], channel_id=details['id'])
                     details = {}
 
     def write_file(self, file_path):
@@ -56,7 +62,7 @@ class M3U8File():
         with open(file_path, 'w', encoding='utf-8') as file_ptr:
             file_ptr.write(F'{M3U8_OPENING_TAG}\n')
             for channel in self.channel_list:
-                file_ptr.write(F'''{M3U8_CHANNEL_INFO_PREFIX}0 group-title="{channel['group']}",{channel["name"]}\n''')
+                file_ptr.write(F'''{M3U8_CHANNEL_INFO_PREFIX}0 tvg-id="{channel['id']}" group-title="{channel['group']}",{channel["name"]}\n''')
                 file_ptr.write(F'{channel["url"]}\n')
 
 
