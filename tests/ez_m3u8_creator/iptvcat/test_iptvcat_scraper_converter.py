@@ -83,7 +83,9 @@ def test_convert_dir_to_m3u8(tmpdir):
                     convert_file_list = list(convert_file_ptr)
                     test_file_list = list(test_file_ptr)
 
+                    print(convert_file_list)
+                    print(test_file_list)
                     assert len(convert_file_list) == len(test_file_list)
 
-                for idx, line in enumerate(convert_file_list):
-                    assert line == test_file_list[idx]
+                    for idx, line in enumerate(convert_file_list):
+                        assert line == test_file_list[idx]
