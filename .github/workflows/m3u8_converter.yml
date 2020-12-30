@@ -9,6 +9,7 @@ on:
     branches:
     - master
     - main
+    - feature/add-epg
 
 jobs:
 
@@ -30,6 +31,7 @@ jobs:
           echo "IPTVCAT_DATE=$(date -d "yesterday 13:00" '+%Y-%m-%d')" >> $GITHUB_ENV
           echo "IPTVCAT_DOWNLOAD_DIR=${{ github.workspace }}/temp/iptvcat" >> $GITHUB_ENV
           echo "M3U8_DIR=${{ github.workspace }}/temp/m3u8" >> $GITHUB_ENV
+          echo "EPG_TEMP_DIR=${{ github.workspace }}/temp/epg" >> $GITHUB_ENV
 
           # Update pythonpath used for our scripts
           echo "PYTHONPATH=$PYTHONPATH:${{ github.workspace }}" >> $GITHUB_ENV
@@ -39,16 +41,21 @@ jobs:
           echo "IPTVCAT_DATE: '${IPTVCAT_DATE}'"
           echo "IPTVCAT_DOWNLOAD_DIR: '${IPTVCAT_DOWNLOAD_DIR}'"
           echo "M3U8_DIR: '${M3U8_DIR}'"
+          echo "EPG_TEMP_DIR: '${EPG_TEMP_DIR}'"
 
           echo "Command: 'mkdir -p ${IPTVCAT_DOWNLOAD_DIR}'"
           mkdir -p ${IPTVCAT_DOWNLOAD_DIR}
           echo "Command: 'mkdir -p ${M3U8_DIR}'"
           mkdir -p ${M3U8_DIR}
+          echo "Command: 'mkdir -p ${EPG_TEMP_DIR}'"
+          mkdir -p ${EPG_TEMP_DIR}
 
           echo "Command: 'ls -alt ${IPTVCAT_DOWNLOAD_DIR}'"
           ls -alt ${IPTVCAT_DOWNLOAD_DIR}
           echo "Command: 'ls -alt ${M3U8_DIR}'"
           ls -alt ${M3U8_DIR}
+          echo "Command: 'ls -alt ${EPG_TEMP_DIR}'"
+          ls -alt ${EPG_TEMP_DIR}
 
       # - name: Get IPTVCat Release
       #   run: |
@@ -85,6 +92,12 @@ jobs:
       #     echo "Command: 'python ./scripts/ftp_upload.py --ftp_server "${{ secrets.FTP_UPLOAD_ADDRESS }}" --ftp_user "${{ secrets.FTP_UPLOAD_USERNAME }}" --ftp_pass "********" --ftp_dir "${{ secrets.FTP_UPLOAD_REMOTE_DIR }}" --upload_dir "${M3U8_DIR}"'"
       #     python ./scripts/ftp_upload.py --ftp_server "${{ secrets.FTP_UPLOAD_ADDRESS }}" --ftp_user "${{ secrets.FTP_UPLOAD_USERNAME }}" --ftp_pass "${{ secrets.FTP_UPLOAD_PASSWORD }}" --ftp_dir "${{ secrets.FTP_UPLOAD_REMOTE_DIR }}" --upload_dir "${M3U8_DIR}"
 
-      - name: Update EPG
+      - name: Get EPG from M3U4U
         run: |
+        echo "Command: './scripts/download_file.sh "${{ secrets.M3U4U_EPG_URL_XML_GZ }}" "${EPG_TEMP_DIR}" "${{ secrets.M3U4U_EPG_FILE_NAME_XML_GZ }}"'"
+        ./scripts/download_file.sh "${{ secrets.M3U4U_EPG_URL_XML_GZ }}" "${EPG_TEMP_DIR}" "${{ secrets.M3U4U_EPG_FILE_NAME_XML_GZ }}"
 
+      - name: Upload EPG to dropbox
+        run: |
+          echo "Command: './scripts/upload_to_dropbox.sh "${EPG_TEMP_DIR}" "EPG" "********"'"
+          ./scripts/upload_to_dropbox.sh "${EPG_TEMP_DIR}" "EPG" "${{ secrets.DROPBOX_UPLOAD_TOKEN }}"
