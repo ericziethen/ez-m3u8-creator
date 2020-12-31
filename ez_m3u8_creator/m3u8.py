@@ -66,7 +66,9 @@ class M3U8File():
         with open(file_path, 'w', encoding='utf-8') as file_ptr:
             file_ptr.write(F'{M3U8_OPENING_TAG} url-tvg="{self.egp_url}"\n')
             for channel in self.channel_list:
-                file_ptr.write(F'''{M3U8_CHANNEL_INFO_PREFIX}0 tvg-id="{channel['id']}" group-title="{channel['group']}",{channel["name"]}\n''')
+                file_ptr.write(
+                    F'''{M3U8_CHANNEL_INFO_PREFIX}0 tvg-id="{channel['id']}" group-title="{channel['group']}"'''
+                    F''',{channel["name"]}\n''')
                 file_ptr.write(F'{channel["url"]}\n')
 
 
