@@ -70,7 +70,8 @@ class M3U8File():
         """Write the m3u8 file."""
         with open(file_path, 'w', encoding='utf-8') as file_ptr:
             file_ptr.write(
-                F'{M3U8_OPENING_TAG} tvg-url="{self.epg_tvg_url}" url-tvg="{self.epg_url_tvg}" x-tvg-url="{self.epg_x_tvg_url}"\n')
+                F'{M3U8_OPENING_TAG} '
+                F'tvg-url="{self.epg_tvg_url}" url-tvg="{self.epg_url_tvg}" x-tvg-url="{self.epg_x_tvg_url}"\n')
             for channel in self.channel_list:
                 file_ptr.write(
                     F'''{M3U8_CHANNEL_INFO_PREFIX}0 tvg-id="{channel['id']}" group-title="{channel['group']}"'''
