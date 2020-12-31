@@ -1,7 +1,6 @@
-"""Script to convert iptvcat json files to m3u8."""
+"""Script to add an EPG url to m3u8 files."""
 
 import argparse
-import json
 import os
 import sys
 
@@ -27,25 +26,15 @@ def main():
     if (not os.path.exists(args.m3u8_out_dir)) or not os.path.isdir(args.m3u8_out_dir):
         raise ValueError(F'"{args.m3u8_out_dir}" is not a vaid directory')
 
-
-
-
-
-
-
-
-
-
-
     for filename in os.listdir(args.m3u8_in_dir):
         if not filename.lower().endswith('.m3u8') and not filename.lower().endswith('.m3u'):
             continue
 
-
         m3u8_file = m3u8.M3U8File(os.path.join(args.m3u8_in_dir, filename))
 
-
-
+        print('BEFORE:::', m3u8_file.egp_url)
+        m3u8_file.egp_url = args.epg_url
+        print('AFTER :::', m3u8_file.egp_url)
 
         out_path = os.path.join(os.path.join(args.m3u8_out_dir, filename))
         m3u8_file.write_file(out_path)
