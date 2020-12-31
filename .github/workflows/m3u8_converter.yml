@@ -57,30 +57,35 @@ jobs:
           echo "Command: 'ls -alt ${EPG_TEMP_DIR}'"
           ls -alt ${EPG_TEMP_DIR}
 
-      # - name: Get IPTVCat Release
-      #   run: |
-      #     echo "Command: './scripts/iptvcat/get_iptvcat_scraper_release.sh "${IPTVCAT_DATE}" "${IPTVCAT_DOWNLOAD_DIR}"'"
-      #     ./scripts/iptvcat/get_iptvcat_scraper_release.sh "${IPTVCAT_DATE}" "${IPTVCAT_DOWNLOAD_DIR}"
+      - name: Get IPTVCat Release
+        run: |
+          echo "Command: './scripts/iptvcat/get_iptvcat_scraper_release.sh "${IPTVCAT_DATE}" "${IPTVCAT_DOWNLOAD_DIR}"'"
+          ./scripts/iptvcat/get_iptvcat_scraper_release.sh "${IPTVCAT_DATE}" "${IPTVCAT_DOWNLOAD_DIR}"
 
-      # - name: Convert IPTVCat (JSON to m3u8)
-      #   run: |
-      #     echo "Command: 'ls -alt ${IPTVCAT_DOWNLOAD_DIR}'"
-      #     ls -alt ${IPTVCAT_DOWNLOAD_DIR}
-      #     echo "Command: 'ls -alt ${M3U8_DIR}'"
-      #     ls -alt ${M3U8_DIR}
+      - name: Convert IPTVCat (JSON to m3u8)
+        run: |
+          echo "Command: 'ls -alt ${IPTVCAT_DOWNLOAD_DIR}'"
+          ls -alt ${IPTVCAT_DOWNLOAD_DIR}
+          echo "Command: 'ls -alt ${M3U8_DIR}'"
+          ls -alt ${M3U8_DIR}
 
-      #     echo "Command: 'python ./scripts/iptvcat/convert_iptvcat_scraper_files.py "${IPTVCAT_DOWNLOAD_DIR}" "${M3U8_DIR}"'"
-      #     python ./scripts/iptvcat/convert_iptvcat_scraper_files.py "${IPTVCAT_DOWNLOAD_DIR}" "${M3U8_DIR}"
+          echo "Command: 'python ./scripts/iptvcat/convert_iptvcat_scraper_files.py "${IPTVCAT_DOWNLOAD_DIR}" "${M3U8_DIR}"'"
+          python ./scripts/iptvcat/convert_iptvcat_scraper_files.py "${IPTVCAT_DOWNLOAD_DIR}" "${M3U8_DIR}"
 
-      #     echo "Command: 'ls -alt ${IPTVCAT_DOWNLOAD_DIR}'"
-      #     ls -alt ${IPTVCAT_DOWNLOAD_DIR}
-      #     echo "Command: 'ls -alt ${M3U8_DIR}'"
-      #     ls -alt ${M3U8_DIR}
+          echo "Command: 'ls -alt ${IPTVCAT_DOWNLOAD_DIR}'"
+          ls -alt ${IPTVCAT_DOWNLOAD_DIR}
+          echo "Command: 'ls -alt ${M3U8_DIR}'"
+          ls -alt ${M3U8_DIR}
 
-      # - name: Add Channel Categories
-      #   run: |
-      #     echo "Command: 'python ./scripts/import_categories_into_m3u8.py --category_file "./ez_m3u8_creator/categories/main.json" --m3u8_in_dir "${M3U8_DIR}" --m3u8_out_dir "${M3U8_DIR}"'"
-      #     python ./scripts/import_categories_into_m3u8.py --category_file "./ez_m3u8_creator/categories/main.json" --m3u8_in_dir "${M3U8_DIR}" --m3u8_out_dir "${M3U8_DIR}"
+      - name: Add Channel Categories
+        run: |
+          echo "Command: 'python ./scripts/import_categories_into_m3u8.py --category_file "./ez_m3u8_creator/categories/main.json" --m3u8_in_dir "${M3U8_DIR}" --m3u8_out_dir "${M3U8_DIR}"'"
+          python ./scripts/import_categories_into_m3u8.py --category_file "./ez_m3u8_creator/categories/main.json" --m3u8_in_dir "${M3U8_DIR}" --m3u8_out_dir "${M3U8_DIR}"
+
+      - name: Match EPG IDs
+        run: |
+          echo "Command: './scripts/match_epgid_to_names.sh "${M3U8_DIR}" "${M3U8_DIR}"'"
+          ./scripts/match_epgid_to_names.sh "${M3U8_DIR}" "${M3U8_DIR}"
 
       # - name: Upload m3u8 files to Dropbox
       #   run: |
@@ -92,12 +97,12 @@ jobs:
       #     echo "Command: 'python ./scripts/ftp_upload.py --ftp_server "${{ secrets.FTP_UPLOAD_ADDRESS }}" --ftp_user "${{ secrets.FTP_UPLOAD_USERNAME }}" --ftp_pass "********" --ftp_dir "${{ secrets.FTP_UPLOAD_REMOTE_DIR }}" --upload_dir "${M3U8_DIR}"'"
       #     python ./scripts/ftp_upload.py --ftp_server "${{ secrets.FTP_UPLOAD_ADDRESS }}" --ftp_user "${{ secrets.FTP_UPLOAD_USERNAME }}" --ftp_pass "${{ secrets.FTP_UPLOAD_PASSWORD }}" --ftp_dir "${{ secrets.FTP_UPLOAD_REMOTE_DIR }}" --upload_dir "${M3U8_DIR}"
 
-      - name: Get EPG from M3U4U
-        run: |
-          echo "Command: './scripts/download_file.sh "${{ secrets.M3U4U_EPG_URL_XML_GZ }}" "${EPG_TEMP_DIR}" "${{ secrets.M3U4U_EPG_FILE_NAME_XML_GZ }}"'"
-          ./scripts/download_file.sh "${{ secrets.M3U4U_EPG_URL_XML_GZ }}" "${EPG_TEMP_DIR}" "${{ secrets.M3U4U_EPG_FILE_NAME_XML_GZ }}"
+      # - name: Get EPG from M3U4U
+      #   run: |
+      #     echo "Command: './scripts/download_file.sh "${{ secrets.M3U4U_EPG_URL_XML_GZ }}" "${EPG_TEMP_DIR}" "${{ secrets.M3U4U_EPG_FILE_NAME_XML_GZ }}"'"
+      #     ./scripts/download_file.sh "${{ secrets.M3U4U_EPG_URL_XML_GZ }}" "${EPG_TEMP_DIR}" "${{ secrets.M3U4U_EPG_FILE_NAME_XML_GZ }}"
 
-      - name: Upload EPG to dropbox
-        run: |
-          echo "Command: './scripts/upload_to_dropbox.sh "${EPG_TEMP_DIR}" "EPG" "********"'"
-          ./scripts/upload_to_dropbox.sh "${EPG_TEMP_DIR}" "EPG" "${{ secrets.DROPBOX_UPLOAD_TOKEN }}"
+      # - name: Upload EPG to dropbox
+      #   run: |
+      #     echo "Command: './scripts/upload_to_dropbox.sh "${EPG_TEMP_DIR}" "EPG" "********"'"
+      #     ./scripts/upload_to_dropbox.sh "${EPG_TEMP_DIR}" "EPG" "${{ secrets.DROPBOX_UPLOAD_TOKEN }}"

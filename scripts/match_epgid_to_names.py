@@ -5,7 +5,7 @@ import json
 import os
 import sys
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from ez_m3u8_creator import m3u8
 
@@ -36,7 +36,7 @@ def main():
 
         channel_name = channel['name'].strip().upper().removesuffix('  FHD').removesuffix('UHD').removesuffix(' HD').strip()
         for info in json_data:
-            if info['name'].upper() == channel_name:
+            if info['name'].upper().strip() == channel_name:
                 channel['id'] = info['tvgid']
                 count += 1
                 break
