@@ -25,19 +25,35 @@ def main():
 
     m3u8_file = m3u8.M3U8File(args.input_file)
 
-    json_data = None
+    json_data = {}
+    raw_json_data = None
     with open(args.json_file, 'r') as file_ptr:
-        json_data = json.load(file_ptr)
+        raw_json_data = json.load(file_ptr)
 
+    # Clean up json data
+    for info in raw_json_data:
+        json_data[m3u8.remove_meta_data_from_channel_name(info['name']).upper()] = info['tvgid']
+
+    # Find matching channels
     count = 0
     for _, channel_list in m3u8_file.channel_url_dict.items():
         for channel in channel_list:
             channel_name = m3u8.remove_meta_data_from_channel_name(channel['name'])
-            for info in json_data:
-                if info['name'].upper().strip() == channel_name:
-                    channel['id'] = info['tvgid']
-                    count += 1
-                    break
+
+            if 'DAZN' in channel['name'].upper():
+                print(F'''"{channel['name']}" -> "{channel_name}"''')
+
+            channel_key = channel_name.upper()
+            if channel_key in json_data:
+                channel['id'] = json_data[channel_key]
+                count += 1
+
+            # for info in json_data:
+            #     json_name = m3u8.remove_meta_data_from_channel_name(info['name'])
+            #     if json_name.upper() == channel_name.upper():
+            #         channel['id'] = info['tvgid']
+            #         count += 1
+            #         break
 
     print('FOUND:', count)
 

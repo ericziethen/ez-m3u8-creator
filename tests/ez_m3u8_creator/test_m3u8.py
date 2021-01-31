@@ -114,3 +114,73 @@ def test_remove_duplicate_urls():
     assert len(m3u8_file.channel_url_dict) == 2
     assert len(m3u8_file.channel_url_dict['channel_url_1']) == 1
     assert len(m3u8_file.channel_url_dict['channel_url_2']) == 1
+
+
+# CHANNEL_CLEANING = [
+#     ('ARD', 'ARD'),
+#     ('ard', 'ard'),
+#     ('  ARD', 'ARD'),
+#     ('ARD  ', 'ARD'),
+#     ('ARD     News', 'ARD News'),
+
+
+#     # ('', ''),
+#     # ('', ''),
+#     # ('', ''),
+#     # ('', ''),
+#     # ('', ''),
+#     # ('', ''),
+#     # ('', ''),
+#     # ('', ''),
+#     # ('', ''),
+#     # ('', ''),
+# ]
+# @pytest.mark.parametrize('orig_name, cleaned_name', CHANNEL_CLEANING)
+# def test_clean_channel_name(orig_name, cleaned_name):
+#     assert cleaned_name == m3u8.clean_channel_name(orig_name)
+
+
+
+
+
+
+CHANNEL_NAME_META_CLEANING = [
+    ('ARD', 'ARD'),
+    ('ARD ', 'ARD'),
+    (' ARD ', 'ARD'),
+    ('  ARD  ', 'ARD'),
+    ('ARD HD', 'ARD'),
+    ('ARD hd', 'ARD'),
+    ('ARD Hd', 'ARD'),
+    ('ARD HD News', 'ARDNews'),
+    ('ARD    News', 'ARDNews'),
+    ('ARD  SD', 'ARD'),
+    ('ARD FHD', 'ARD'),
+    ('ARDSD', 'ARDSD'),
+    ('ARDHD', 'ARDHD'),
+    ('ARDFHD', 'ARDFHD'),
+    ('ARD 4k+ ', 'ARD'),
+    ('ARD 4K+ ', 'ARD'),
+    ('ARD (HD)', 'ARD'),
+    ('ARD (Hd)', 'ARD'),
+    ('ARD (720)', 'ARD'),
+    ('ARD(720)', 'ARD'),
+    ('(ID)ARD(720)', 'ARD'),
+    ('ARD (720)(M)', 'ARD'),
+    ('ARD (720) (M)', 'ARD'),
+    ('Auto Motor und Sport', 'AutoMotorSport'),
+    ('3-SAT', '3SAT'),
+    ('a.tv', 'atv'),
+    ('E! ENTERTAINMENT', 'EENTERTAINMENT'),
+    ('NDR Fernsehen', 'NDR'),
+    ('NDR FS', 'NDR'),
+    ('nick Pluto TV', 'nick'),
+    ('nick Pluto TV+', 'nick'),
+]
+@pytest.mark.parametrize('orig_name, cleaned_name', CHANNEL_NAME_META_CLEANING)
+def test_remove_meta_data_from_channel_name(orig_name, cleaned_name):
+    assert cleaned_name == m3u8.remove_meta_data_from_channel_name(orig_name)
+
+
+
+

@@ -124,3 +124,41 @@ def get_categories_from_json(*, channel_name, json_data):
     # print("categories", categories)
 
     return categories
+
+
+def clean_channel_name(name):
+    """Clean the channel name."""
+
+
+    return name
+
+
+def remove_meta_data_from_channel_name(name):
+    """Remove metadata from channel name e.g. Resolution information etc."""
+    channel_name = name
+
+    # Remove anything in brackets
+    pattern = re.compile(R'\(.*?\)', re.IGNORECASE)
+    channel_name = re.sub(pattern, ' ', channel_name)
+
+    # Replace Non-Alphanumeric - !!! Must be after any rule using special characters
+    channel_name = re.sub('[^0-9a-zA-Z]+', ' ', channel_name)
+
+
+    # Remove Resolution definition
+    sub_pattern = ['HD', 'SD', 'FHD', '[2|4]k[+]*', '576|720|1080[p|i]*', 'und',
+                   'FS', 'Fernsehen', 'Pluto TV[+]*']
+    search_pattern = ''
+    for marker in sub_pattern:
+        if search_pattern:
+            search_pattern += '|'
+        search_pattern += F' ({marker}) |(^{marker}) | ({marker}$)'
+
+    pattern = re.compile(search_pattern, re.IGNORECASE)
+    channel_name = re.sub(pattern, ' ', channel_name)  # Replace with ' ' to not concatenate other strings
+
+    # Remove multi spaces inside the string
+    pattern = re.compile(R'\s+', re.IGNORECASE)
+    channel_name = re.sub(pattern, '', channel_name)
+
+    return channel_name.strip()
