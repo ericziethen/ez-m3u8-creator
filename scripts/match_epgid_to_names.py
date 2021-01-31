@@ -32,10 +32,7 @@ def main():
     count = 0
     for _, channel_list in m3u8_file.channel_url_dict.items():
         for channel in channel_list:
-        #     if channel['name'].lower().startswith('Sky Sport Bundesliga'):
-        #         print('### Channel:', channel['name'])
-
-            channel_name = channel['name'].strip().upper().removesuffix('  FHD').removesuffix('UHD').removesuffix(' HD').strip()
+            channel_name = m3u8.remove_meta_data_from_channel_name(channel['name'])
             for info in json_data:
                 if info['name'].upper().strip() == channel_name:
                     channel['id'] = info['tvgid']
