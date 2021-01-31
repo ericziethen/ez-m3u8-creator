@@ -1,7 +1,6 @@
 """Script to convert m3u4u channel files to a fake m3u playlist."""
 
 import argparse
-import json
 import os
 import sys
 
@@ -25,37 +24,7 @@ def main():
 
     m3u8_file = m3u8.M3U8File(args.input_file)
 
-    json_data = {}
-    raw_json_data = None
-    with open(args.json_file, 'r') as file_ptr:
-        raw_json_data = json.load(file_ptr)
-
-    # Clean up json data
-    for info in raw_json_data:
-        json_data[m3u8.remove_meta_data_from_channel_name(info['name']).upper()] = info['tvgid']
-
-    # Find matching channels
-    count = 0
-    for _, channel_list in m3u8_file.channel_url_dict.items():
-        for channel in channel_list:
-            channel_name = m3u8.remove_meta_data_from_channel_name(channel['name'])
-
-            if 'DAZN' in channel['name'].upper():
-                print(F'''"{channel['name']}" -> "{channel_name}"''')
-
-            channel_key = channel_name.upper()
-            if channel_key in json_data:
-                channel['id'] = json_data[channel_key]
-                count += 1
-
-            # for info in json_data:
-            #     json_name = m3u8.remove_meta_data_from_channel_name(info['name'])
-            #     if json_name.upper() == channel_name.upper():
-            #         channel['id'] = info['tvgid']
-            #         count += 1
-            #         break
-
-    print('FOUND:', count)
+    m3u8.match_epg_channels(m3u8_file, args.json_file)
 
     m3u8_file.write_file(args.out_file)
 
