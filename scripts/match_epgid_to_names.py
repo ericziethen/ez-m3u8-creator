@@ -24,7 +24,8 @@ def main():
 
     m3u8_file = m3u8.M3U8File(args.input_file)
 
-    m3u8.match_epg_channels(m3u8_file, args.json_file)
+    count = m3u8.match_epg_channels(m3u8_file, args.json_file)
+    print('FOUND:', count)
 
     m3u8_file.write_file(args.out_file)
 

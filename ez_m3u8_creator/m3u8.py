@@ -95,34 +95,20 @@ class M3U8File():
 
 def get_categories_from_json(*, channel_name, json_data):
     """Get the categories for a channel name."""
-    # if "hr" not in channel_name.lower():
-    #     return []
-
-    # print(F'\n\n##### {channel_name} #####')
-
     categories = []
     for category in json_data:  # pylint: disable=too-many-nested-blocks
-        # print('category', category)
         for name, criterias in category.items():
-            # print('  name', name)
-
             for criteria in criterias:
-                # print('     criteria', criteria)
                 if criteria == 'icontains':
                     for keyword in criterias[criteria]:
                         if keyword.lower() in channel_name.lower():
                             categories.append(name)
-                            # print('             => FOUND')
                             break
                 elif criteria == 'iexact':
-                    # print('CRITERIA', criteria)
                     for keyword in criterias[criteria]:
                         if keyword.lower() == channel_name.lower():
                             categories.append(name)
-                            # print('             => FOUND')
                             break
-
-    # print("categories", categories)
 
     return categories
 
@@ -141,7 +127,7 @@ def remove_meta_data_from_channel_name(name):
     # Number Convertion
     sub_pattern_list = [
         ('Eins', '1'), ('Zwei', '2'), ('Drei', '3'), ('Vier', '4'),
-        ('I', '1'), ('II', '2'), ('III', '3'), ('IV', '4') 
+        ('I', '1'), ('II', '2'), ('III', '3'), ('IV', '4')
     ]
     search_pattern = ''
     for sub_pattern, replacement in sub_pattern_list:
@@ -171,7 +157,6 @@ def remove_meta_data_from_channel_name(name):
 
 def match_epg_channels(m3u8_file, epg_json_path):
     """Match the channels inside the give m3u file object to the channels in the given json file."""
-
     json_data = {}
     raw_json_data = None
     with open(epg_json_path, 'r') as file_ptr:
@@ -181,27 +166,15 @@ def match_epg_channels(m3u8_file, epg_json_path):
     for info in raw_json_data:
         json_data[remove_meta_data_from_channel_name(info['name']).upper()] = info['tvgid']
 
-    #print(json_data.keys())
-
     # Find matching channels
     count = 0
     for _, channel_list in m3u8_file.channel_url_dict.items():
         for channel in channel_list:
             channel_name = remove_meta_data_from_channel_name(channel['name'])
 
-            if '1-2-3' in channel['name'].upper():
-                print(F'''"{channel['name']}" -> "{channel_name}"''')
-
             channel_key = channel_name.upper()
             if channel_key in json_data:
                 channel['id'] = json_data[channel_key]
                 count += 1
 
-            # for info in json_data:
-            #     json_name = m3u8.remove_meta_data_from_channel_name(info['name'])
-            #     if json_name.upper() == channel_name.upper():
-            #         channel['id'] = info['tvgid']
-            #         count += 1
-            #         break
-
-    print('FOUND:', count)
+    return count
