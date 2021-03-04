@@ -72,10 +72,10 @@ jobs:
           echo "Command: './scripts/iptvcat/get_iptvcat_scraper_release.sh "${IPTVCAT_DOWNLOAD_DIR}" "${IPTVCAT_DATE}" "${IPTVCAT_DATE_YESTERDAY}"'"
           ./scripts/iptvcat/get_iptvcat_scraper_release.sh "${IPTVCAT_DOWNLOAD_DIR}" "${IPTVCAT_DATE}" "${IPTVCAT_DATE_YESTERDAY}"
 
-      - name: Get EPG from M3U4U
-        run: |
-          echo "Command: './scripts/download_file_allow_failiure.sh "${{ secrets.M3U4U_EPG_URL_XML_GZ }}" "${EPG_TEMP_DIR}" "${{ secrets.M3U4U_EPG_FILE_NAME_XML_GZ }}"'"
-          ./scripts/download_file_allow_failiure.sh "${{ secrets.M3U4U_EPG_URL_XML_GZ }}" "${EPG_TEMP_DIR}" "${{ secrets.M3U4U_EPG_FILE_NAME_XML_GZ }}"
+      # - name: Get EPG from M3U4U
+      #   run: |
+      #     echo "Command: './scripts/download_file_allow_failiure.sh "${{ secrets.M3U4U_EPG_URL_XML_GZ }}" "${EPG_TEMP_DIR}" "${{ secrets.M3U4U_EPG_FILE_NAME_XML_GZ }}"'"
+      #     ./scripts/download_file_allow_failiure.sh "${{ secrets.M3U4U_EPG_URL_XML_GZ }}" "${EPG_TEMP_DIR}" "${{ secrets.M3U4U_EPG_FILE_NAME_XML_GZ }}"
 
       - name: Get Static Files from Dropbox
         run: |
@@ -102,8 +102,14 @@ jobs:
 
       - name: Merge with Static Files
         run: |
-          echo "Command: './scripts/merge_m3u8_files_in_dirs.sh "${M3U8_STATIC_DIR}" "${M3U8_DIR}"'"
-          ./scripts/merge_m3u8_files_in_dirs.sh "${M3U8_STATIC_DIR}" "${M3U8_DIR}"
+          ls -alt ${M3U8_DIR}
+          ls -alt ${M3U8_STATIC_DIR}
+
+          echo "Command: './scripts/merge_m3u8_files_in_dirs.sh "${M3U8_DIR}" "${M3U8_STATIC_DIR}"'"
+          ./scripts/merge_m3u8_files_in_dirs.sh "${M3U8_DIR}" "${M3U8_STATIC_DIR}"
+
+          ls -alt ${M3U8_DIR}
+          ls -alt ${M3U8_STATIC_DIR}
 
 
       # - name: Add Channel Categories
