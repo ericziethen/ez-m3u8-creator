@@ -186,3 +186,12 @@ def match_epg_channels(m3u8_file, epg_json_path):
                 count += 1
 
     return count
+
+
+def merge_m3u8_files(*, merge_into_path, merge_from_path):
+    """Merge the merge_from_path file into the merge_into_path file."""
+    to_file = M3U8File(merge_into_path)
+    from_file = M3U8File(merge_from_path)
+
+    to_file.merge(from_file)
+    to_file.write_file(merge_into_path)
