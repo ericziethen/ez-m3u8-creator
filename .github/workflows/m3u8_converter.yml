@@ -9,7 +9,6 @@ on:
     branches:
     - master
     - main
-    - feature/merge-our-own-playlists-in
 
 jobs:
 
@@ -72,10 +71,10 @@ jobs:
           echo "Command: './scripts/iptvcat/get_iptvcat_scraper_release.sh "${IPTVCAT_DOWNLOAD_DIR}" "${IPTVCAT_DATE}" "${IPTVCAT_DATE_YESTERDAY}"'"
           ./scripts/iptvcat/get_iptvcat_scraper_release.sh "${IPTVCAT_DOWNLOAD_DIR}" "${IPTVCAT_DATE}" "${IPTVCAT_DATE_YESTERDAY}"
 
-      # - name: Get EPG from M3U4U
-      #   run: |
-      #     echo "Command: './scripts/download_file_allow_failiure.sh "${{ secrets.M3U4U_EPG_URL_XML_GZ }}" "${EPG_TEMP_DIR}" "${{ secrets.M3U4U_EPG_FILE_NAME_XML_GZ }}"'"
-      #     ./scripts/download_file_allow_failiure.sh "${{ secrets.M3U4U_EPG_URL_XML_GZ }}" "${EPG_TEMP_DIR}" "${{ secrets.M3U4U_EPG_FILE_NAME_XML_GZ }}"
+      - name: Get EPG from M3U4U
+        run: |
+          echo "Command: './scripts/download_file_allow_failiure.sh "${{ secrets.M3U4U_EPG_URL_XML_GZ }}" "${EPG_TEMP_DIR}" "${{ secrets.M3U4U_EPG_FILE_NAME_XML_GZ }}"'"
+          ./scripts/download_file_allow_failiure.sh "${{ secrets.M3U4U_EPG_URL_XML_GZ }}" "${EPG_TEMP_DIR}" "${{ secrets.M3U4U_EPG_FILE_NAME_XML_GZ }}"
 
       - name: Get Static Files from Dropbox
         run: |
@@ -111,29 +110,28 @@ jobs:
           ls -alt ${M3U8_DIR}
           ls -alt ${M3U8_STATIC_DIR}
 
+      - name: Add Channel Categories
+        run: |
+          echo "Command: 'python ./scripts/import_categories_into_m3u8.py --category_file "./ez_m3u8_creator/categories/main.json" --m3u8_in_dir "${M3U8_DIR}" --m3u8_out_dir "${M3U8_DIR}"'"
+          python ./scripts/import_categories_into_m3u8.py --category_file "./ez_m3u8_creator/categories/main.json" --m3u8_in_dir "${M3U8_DIR}" --m3u8_out_dir "${M3U8_DIR}"
 
-      # - name: Add Channel Categories
-      #   run: |
-      #     echo "Command: 'python ./scripts/import_categories_into_m3u8.py --category_file "./ez_m3u8_creator/categories/main.json" --m3u8_in_dir "${M3U8_DIR}" --m3u8_out_dir "${M3U8_DIR}"'"
-      #     python ./scripts/import_categories_into_m3u8.py --category_file "./ez_m3u8_creator/categories/main.json" --m3u8_in_dir "${M3U8_DIR}" --m3u8_out_dir "${M3U8_DIR}"
+      - name: Match EPG IDs
+        run: |
+          echo "Command: './scripts/match_epgid_to_names.sh "${M3U8_DIR}" "${M3U8_DIR}"'"
+          ./scripts/match_epgid_to_names.sh "${M3U8_DIR}" "${M3U8_DIR}"
 
-      # - name: Match EPG IDs
-      #   run: |
-      #     echo "Command: './scripts/match_epgid_to_names.sh "${M3U8_DIR}" "${M3U8_DIR}"'"
-      #     ./scripts/match_epgid_to_names.sh "${M3U8_DIR}" "${M3U8_DIR}"
+      - name: Add EPG URL to files
+        run: |
+          echo "Command: 'python ./scripts/add_epg_url_into_m3u8.py --epg_url "${{ secrets.DROPBOX_EPG_URL_XML_GZ }}" --m3u8_in_dir "${M3U8_DIR}" --m3u8_out_dir "${M3U8_DIR}"'"
+          python ./scripts/add_epg_url_into_m3u8.py --epg_url "${{ secrets.DROPBOX_EPG_URL_XML_GZ }}" --m3u8_in_dir "${M3U8_DIR}" --m3u8_out_dir "${M3U8_DIR}"
 
-      # - name: Add EPG URL to files
-      #   run: |
-      #     echo "Command: 'python ./scripts/add_epg_url_into_m3u8.py --epg_url "${{ secrets.DROPBOX_EPG_URL_XML_GZ }}" --m3u8_in_dir "${M3U8_DIR}" --m3u8_out_dir "${M3U8_DIR}"'"
-      #     python ./scripts/add_epg_url_into_m3u8.py --epg_url "${{ secrets.DROPBOX_EPG_URL_XML_GZ }}" --m3u8_in_dir "${M3U8_DIR}" --m3u8_out_dir "${M3U8_DIR}"
+      ### FILE UPLOADS ###
+      - name: Upload EPG to dropbox
+        run: |
+          echo "Command: './scripts/upload_to_dropbox.sh "${EPG_TEMP_DIR}" "EPG" "********"'"
+          ./scripts/upload_to_dropbox.sh "${EPG_TEMP_DIR}" "EPG" "${{ secrets.DROPBOX_UPLOAD_TOKEN }}"
 
-      # ### FILE UPLOADS ###
-      # - name: Upload EPG to dropbox
-      #   run: |
-      #     echo "Command: './scripts/upload_to_dropbox.sh "${EPG_TEMP_DIR}" "EPG" "********"'"
-      #     ./scripts/upload_to_dropbox.sh "${EPG_TEMP_DIR}" "EPG" "${{ secrets.DROPBOX_UPLOAD_TOKEN }}"
-
-      # - name: Upload m3u8 files to Dropbox
-      #   run: |
-      #     echo "Command: './scripts/upload_to_dropbox.sh "${M3U8_DIR}" "IPTV" "********"'"
-      #     ./scripts/upload_to_dropbox.sh "${M3U8_DIR}" "IPTV" "${{ secrets.DROPBOX_UPLOAD_TOKEN }}"
+      - name: Upload m3u8 files to Dropbox
+        run: |
+          echo "Command: './scripts/upload_to_dropbox.sh "${M3U8_DIR}" "IPTV" "********"'"
+          ./scripts/upload_to_dropbox.sh "${M3U8_DIR}" "IPTV" "${{ secrets.DROPBOX_UPLOAD_TOKEN }}"
