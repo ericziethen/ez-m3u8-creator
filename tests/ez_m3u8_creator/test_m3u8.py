@@ -204,3 +204,6 @@ def test_merge_m3us():
     assert m3u8_file.channel_url_dict['url2'][0]['url'] == 'url2'
     assert m3u8_file.channel_url_dict['url2'][0]['group'] == 'g2'
     assert m3u8_file.channel_url_dict['url2'][0]['id'] == 'id2'
+
+    # Test dictionaries are the same, in case new fields are added in the future
+    assert m3u8_file.channel_url_dict['url2'][0] == other_m3u8_file.channel_url_dict['url2'][0]
