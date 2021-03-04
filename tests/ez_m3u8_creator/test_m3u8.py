@@ -173,3 +173,34 @@ def test_match_german_channels_to_epg(name, epg):
     m3u8.match_epg_channels(m3u8_file, EPG_GERMAN_JSON_PATH)
 
     assert m3u8_file.channel_url_dict[url][0]['id'] == epg
+
+
+def test_merge_m3us():
+    m3u8_file = m3u8.M3U8File()
+    m3u8_file.add_channel(name='name1', url='url1', group='g1', channel_id='id1')
+
+    other_m3u8_file = m3u8.M3U8File()
+    other_m3u8_file.add_channel(name='name2', url='url2', group='g2', channel_id='id2')
+    other_m3u8_file.add_channel(name='name3', url='url1', group='g3', channel_id='id4')
+
+    # Base Assertions
+    assert len(m3u8_file.channel_url_dict) == 1
+    assert 'url1' in m3u8_file.channel_url_dict
+    assert len(m3u8_file.channel_url_dict['url1']) == 1
+
+    assert len(other_m3u8_file.channel_url_dict) == 2
+
+    # Merge
+    m3u8_file.merge(other_m3u8_file)
+
+    # Result assertions
+    assert len(m3u8_file.channel_url_dict) == 2
+    assert 'url1' in m3u8_file.channel_url_dict
+    assert len(m3u8_file.channel_url_dict['url1']) == 2
+    assert 'url2' in m3u8_file.channel_url_dict
+    assert len(m3u8_file.channel_url_dict['url2']) == 1
+
+    assert m3u8_file.channel_url_dict['url2'][0]['name'] == 'name2'
+    assert m3u8_file.channel_url_dict['url2'][0]['url'] == 'url2'
+    assert m3u8_file.channel_url_dict['url2'][0]['group'] == 'g2'
+    assert m3u8_file.channel_url_dict['url2'][0]['id'] == 'id2'

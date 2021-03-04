@@ -39,6 +39,14 @@ class M3U8File():
                 if categories and overwrite:
                     channel['group'] = ';'.join(categories)
 
+    def merge(self, other_m3u8_file):
+        """Merge the other_m3u8_file into this one."""
+        for _, channel_list in other_m3u8_file.channel_url_dict.items():
+            for channel in channel_list:
+                self.add_channel(
+                    name=channel['name'], url=channel['url'],
+                    group=channel['group'], channel_id=channel['id'])
+
     def remove_duplicate_urls(self):
         """Remove duplicate URLs from the list."""
         for url, _ in self.channel_url_dict.items():
