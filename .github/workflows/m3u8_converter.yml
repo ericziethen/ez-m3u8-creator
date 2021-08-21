@@ -20,6 +20,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          echo $(date) >> last_attempt.txt
+          git last_attempt.txt
+          git commit -m "cron: setting last attempt time stamp" -a
+
       ### SETUP THE ENVIRONMENT
       - name: Setup Python
         uses: actions/setup-python@v2
