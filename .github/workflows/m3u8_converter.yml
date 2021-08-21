@@ -25,8 +25,14 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           echo $(date) >> last_attempt.txt
+
+          cat last_attempt.txt
+          ls -ltr
+          git status
           git add last_attempt.txt
+          git status
           git commit -m "cron: setting last attempt time stamp" -a
+          git status
 
       # ### SETUP THE ENVIRONMENT
       # - name: Setup Python
