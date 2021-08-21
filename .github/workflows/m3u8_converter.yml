@@ -25,7 +25,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           echo $(date) >> last_attempt.txt
-          git last_attempt.txt
+          git add last_attempt.txt
           git commit -m "cron: setting last attempt time stamp" -a
 
       # ### SETUP THE ENVIRONMENT
