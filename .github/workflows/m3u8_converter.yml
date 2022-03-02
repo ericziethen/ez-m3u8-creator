@@ -2,10 +2,10 @@ name: M3U8_ACTION
 
 on:
   workflow_dispatch:
-  # Run 4 Hours after https://https://github.com/ericziethen/ez-iptvcat-scraper
-  # This should be just after midnight in Australia
+  # Run 6 Hours after https://https://github.com/ericziethen/ez-iptvcat-scraper
+  # This should be a bit after midnight in Australia
   schedule:
-    - cron: "0 16 * * *"
+    - cron: "0 18 * * *"
   push:
     branches:
     - master
