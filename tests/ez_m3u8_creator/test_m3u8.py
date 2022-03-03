@@ -32,19 +32,23 @@ def test_load_m3u8_file(tmpdir):
     out_file = tmpdir.join('output.m3u8')
     m3u8_file.write_file(out_file)
 
-    with open(TEST_FILE_CONVERTION_TEST, 'r', encoding='utf-8') as file_ptr:
+    with open(out_file, 'r', encoding='utf-8') as file_ptr:
         in_file_line_list = [x.rstrip() for x in list(file_ptr)]
-        out_file_line_list = out_file.read_text(encoding='utf-8').split('\n')
 
         print('Test File ', in_file_line_list)
-        print('Check File', out_file_line_list)
 
         # Ensure there are at least some lines in the file
         assert len(in_file_line_list) > 3
 
-        # Rough test that all the lines are matching
-        for idx, line in enumerate(in_file_line_list):
-            assert line == out_file_line_list[idx]
+        # Check the Written Lines is what we expect
+        assert in_file_line_list[0].rstrip() == '#EXTM3U tvg-url="www.111.com" url-tvg="www.222.com" x-tvg-url="www.333.com"'
+        assert in_file_line_list[1].rstrip() == '#EXTINF:0 tvg-id="Channel2.it" group-title="Sport",Channel 2'
+        assert in_file_line_list[2].rstrip() == 'Link.2'
+        assert in_file_line_list[3].rstrip() == '#EXTINF:0 tvg-id="" group-title="News",Channel 5'
+        assert in_file_line_list[4].rstrip() == 'Link.5'
+        assert in_file_line_list[5].rstrip() == '#EXTINF:0 tvg-id="tvland" group-title="",Channel 5'
+        assert in_file_line_list[6].rstrip() == 'Link.55'
+
 
 
 TEST_JSON_CATEGORIES = [
